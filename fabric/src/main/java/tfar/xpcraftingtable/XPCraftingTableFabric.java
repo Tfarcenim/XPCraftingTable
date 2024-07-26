@@ -1,8 +1,8 @@
-package com.example.examplemod;
+package tfar.xpcraftingtable;
 
 import net.fabricmc.api.ModInitializer;
 
-public class ExampleMod implements ModInitializer {
+public class XPCraftingTableFabric implements ModInitializer {
     
     @Override
     public void onInitialize() {
@@ -12,7 +12,7 @@ public class ExampleMod implements ModInitializer {
         // project.
 
         // Use Fabric to bootstrap the Common mod.
-        CommonClass.LOG.info("Hello Fabric world!");
-        CommonClass.init();
+        XPCraftingTable.LOG.info("Hello Fabric world!");
+        XPCraftingTable.init();
     }
 }

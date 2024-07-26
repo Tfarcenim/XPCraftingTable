@@ -1,19 +1,19 @@
-package com.example.examplemod;
+package tfar.xpcraftingtable;
 
 import net.minecraftforge.fml.common.Mod;
 
-@Mod(CommonClass.MOD_ID)
-public class ExampleMod {
+@Mod(XPCraftingTable.MOD_ID)
+public class XPCraftingTableForge {
     
-    public ExampleMod() {
+    public XPCraftingTableForge() {
     
         // This method is invoked by the Forge mod loader when it is ready
         // to load your mod. You can access Forge and Common code in this
         // project.
     
         // Use Forge to bootstrap the Common mod.
-        CommonClass.LOG.info("Hello Forge world!");
-        CommonClass.init();
+        XPCraftingTable.LOG.info("Hello Forge world!");
+        XPCraftingTable.init();
         
     }
 }
