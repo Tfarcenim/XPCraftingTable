@@ -13,7 +13,7 @@ import net.minecraft.world.item.crafting.ShapelessRecipe;
 import tfar.xpcraftingtable.ModRecipeSerializers;
 import tfar.xpcraftingtable.ModRecipeTypes;
 
-public class ShapelessXPRecipe extends ShapelessRecipe {
+public class ShapelessXPRecipe extends ShapelessRecipe implements XPRecipe{
     protected final int xp;
 
     public ShapelessXPRecipe(ResourceLocation pId, String pGroup, ItemStack pResult, NonNullList<Ingredient> pIngredients, int xp) {
@@ -29,6 +29,11 @@ public class ShapelessXPRecipe extends ShapelessRecipe {
     @Override
     public RecipeSerializer<?> getSerializer() {
         return ModRecipeSerializers.SHAPELESS;
+    }
+
+    @Override
+    public int getXP() {
+        return xp;
     }
 
 

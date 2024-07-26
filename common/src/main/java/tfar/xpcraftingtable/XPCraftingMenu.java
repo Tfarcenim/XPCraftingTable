@@ -10,7 +10,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
+import tfar.xpcraftingtable.inventory.XPRequiredSlot;
+import tfar.xpcraftingtable.recipe.XPRecipe;
 
+import javax.swing.text.html.Option;
 import java.util.Optional;
 
 public class XPCraftingMenu extends AbstractContainerMenu {
@@ -19,6 +22,9 @@ public class XPCraftingMenu extends AbstractContainerMenu {
     private final CraftingContainer craftSlots = new CraftingContainer(this, 3, 3);
     private final ResultContainer resultSlots = new ResultContainer();
     private final Player player;
+    public CraftingRecipe current;
+    private final DataSlot dataSlot = DataSlot.standalone();
+    private final DataSlot canPickup = DataSlot.standalone();
 
     public XPCraftingMenu(int id, Inventory $$1) {
         this(id, $$1, ContainerLevelAccess.NULL);
@@ -30,7 +36,7 @@ public class XPCraftingMenu extends AbstractContainerMenu {
         this.access = access;
         this.player = inventory.player;
 
-        this.addSlot(new ResultSlot(inventory.player, this.craftSlots, this.resultSlots, 0, 124, 35));
+        this.addSlot(new XPRequiredSlot(inventory.player, this,this.craftSlots, this.resultSlots, 0, 124, 35));
 
         for(int i = 0; i < 3; ++i) {
             for(int j = 0; j < 3; ++j) {
@@ -47,7 +53,9 @@ public class XPCraftingMenu extends AbstractContainerMenu {
         for(int l = 0; l < 9; ++l) {
             this.addSlot(new Slot(inventory, l, 8 + l * 18, 142));
         }
-
+        dataSlot.set(-1);
+        addDataSlot(dataSlot);
+        addDataSlot(canPickup);
     }
 
 
@@ -65,7 +73,7 @@ public class XPCraftingMenu extends AbstractContainerMenu {
     @Override
     public void slotsChanged(Container pInventory) {
         this.access.execute((p_39386_, p_39387_) -> {
-            slotChangedCraftingGrid(this, p_39386_, this.player, this.craftSlots, this.resultSlots);
+            slotChangedCraftingGrid(p_39386_, this.player, this.craftSlots, this.resultSlots);
         });
     }
 
@@ -83,7 +91,7 @@ public class XPCraftingMenu extends AbstractContainerMenu {
             itemstack = itemstack1.copy();
             if (pIndex == 0) {
                 this.access.execute((level, pos) -> itemstack1.getItem().onCraftedBy(itemstack1, level, pPlayer));
-                if (!this.moveItemStackTo(itemstack1, 10, 46, true)) {
+                if (!this.moveItemStackToCrafting(itemstack1, 10, 46, true)) {
                     return ItemStack.EMPTY;
                 }
 
@@ -121,7 +129,115 @@ public class XPCraftingMenu extends AbstractContainerMenu {
         return itemstack;
     }
 
-    protected static void slotChangedCraftingGrid(AbstractContainerMenu pMenu, Level pLevel, Player pPlayer, CraftingContainer pContainer, ResultContainer pResult) {
+    /**
+     * Merges provided ItemStack with the first available one in the container/player inventor between minIndex
+     * (included) and maxIndex (excluded). Args : stack, minIndex, maxIndex, negativDirection. [!] the Container
+     * implementation do not check if the item is valid for the slot
+     */
+    //@Override
+    protected boolean moveItemStackToCrafting(ItemStack pStack, int pStartIndex, int pEndIndex, boolean pReverseDirection) {
+
+        boolean flag = false;
+
+        if (current == null || !((XPRecipe)current).hasEnough(player)) {
+            return false;
+        }
+
+
+        int i = pStartIndex;
+        if (pReverseDirection) {
+            i = pEndIndex - 1;
+        }
+
+        if (pStack.isStackable()) {
+            while(!pStack.isEmpty()) {
+                if (pReverseDirection) {
+                    if (i < pStartIndex) {
+                        break;
+                    }
+                } else if (i >= pEndIndex) {
+                    break;
+                }
+
+                Slot slot = this.slots.get(i);
+                ItemStack itemstack = slot.getItem();
+                if (!itemstack.isEmpty() && ItemStack.isSameItemSameTags(pStack, itemstack)) {
+                    int j = itemstack.getCount() + pStack.getCount();
+                    int maxSize = Math.min(slot.getMaxStackSize(), pStack.getMaxStackSize());
+                    if (j <= maxSize) {
+                        pStack.setCount(0);
+                        itemstack.setCount(j);
+                        slot.setChanged();
+                        flag = true;
+                    } else if (itemstack.getCount() < maxSize) {
+                        pStack.shrink(maxSize - itemstack.getCount());
+                        itemstack.setCount(maxSize);
+                        slot.setChanged();
+                        flag = true;
+                    }
+                }
+
+                if (pReverseDirection) {
+                    --i;
+                } else {
+                    ++i;
+                }
+            }
+        }
+
+        if (!pStack.isEmpty()) {
+            if (pReverseDirection) {
+                i = pEndIndex - 1;
+            } else {
+                i = pStartIndex;
+            }
+
+            while(true) {
+                if (pReverseDirection) {
+                    if (i < pStartIndex) {
+                        break;
+                    }
+                } else if (i >= pEndIndex) {
+                    break;
+                }
+
+                Slot slot1 = this.slots.get(i);
+                ItemStack itemstack1 = slot1.getItem();
+                if (itemstack1.isEmpty() && slot1.mayPlace(pStack)) {
+                    if (pStack.getCount() > slot1.getMaxStackSize()) {
+                        slot1.set(pStack.split(slot1.getMaxStackSize()));
+                    } else {
+                        slot1.set(pStack.split(pStack.getCount()));
+                    }
+
+                    slot1.setChanged();
+                    flag = true;
+                    break;
+                }
+
+                if (pReverseDirection) {
+                    --i;
+                } else {
+                    ++i;
+                }
+            }
+        }
+
+        return flag;
+    }
+
+    public int getXPRequired() {
+        return dataSlot.get();
+    }
+
+    public boolean canPickup() {
+        if (player.level.isClientSide) {
+            return canPickup.get() != 0;
+        }
+        return current != null && ((XPRecipe)current).hasEnough(player);
+    }
+
+    protected void slotChangedCraftingGrid(Level pLevel, Player pPlayer, CraftingContainer pContainer, ResultContainer pResult) {
         if (!pLevel.isClientSide) {
             ServerPlayer serverplayer = (ServerPlayer)pPlayer;
             ItemStack itemstack = ItemStack.EMPTY;
@@ -133,9 +249,20 @@ public class XPCraftingMenu extends AbstractContainerMenu {
                 }
             }
 
+            current = optional.orElse(null);
+
+            if (current != null) {
+                dataSlot.set(((XPRecipe)current).getXP());
+                canPickup.set(((XPRecipe)current).hasEnough(player) ? 1 : 0);
+            } else {
+                dataSlot.set(-1);
+                canPickup.set(0);
+            }
+
+
             pResult.setItem(0, itemstack);
-            pMenu.setRemoteSlot(0, itemstack);
-            serverplayer.connection.send(new ClientboundContainerSetSlotPacket(pMenu.containerId, pMenu.incrementStateId(), 0, itemstack));
+            setRemoteSlot(0, itemstack);
+            serverplayer.connection.send(new ClientboundContainerSetSlotPacket(containerId, incrementStateId(), 0, itemstack));
         }
     }
 

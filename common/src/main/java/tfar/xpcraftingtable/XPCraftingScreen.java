@@ -22,6 +22,17 @@ public class XPCraftingScreen extends AbstractContainerScreen<XPCraftingMenu> {
         this.renderTooltip(pPoseStack, pMouseX, pMouseY);
     }
 
+    @Override
+    protected void renderLabels(PoseStack matrices, int $$1, int $$2) {
+        super.renderLabels(matrices, $$1, $$2);
+        int xp = menu.getXPRequired();
+        if (xp > -1) {
+            Component component = Component.translatable("container.repair.cost",xp);
+            int $$8 = this.imageWidth - 8 - this.font.width(component) - 2;
+            this.font.drawShadow(matrices,component, $$8, 72, menu.canPickup() ? 0x80ff20 : 0xff6060);
+        }
+    }
+
     protected void renderBg(PoseStack pPoseStack, float pPartialTick, int pX, int pY) {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);

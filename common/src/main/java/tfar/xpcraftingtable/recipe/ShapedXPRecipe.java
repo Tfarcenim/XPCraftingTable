@@ -13,7 +13,7 @@ import net.minecraft.world.item.crafting.ShapedRecipe;
 import tfar.xpcraftingtable.ModRecipeSerializers;
 import tfar.xpcraftingtable.ModRecipeTypes;
 
-public class ShapedXPRecipe extends ShapedRecipe {
+public class ShapedXPRecipe extends ShapedRecipe implements XPRecipe {
     protected final int xp;
 
     public ShapedXPRecipe(ResourceLocation $$0, String $$1, int $$2, int $$3, NonNullList<Ingredient> $$4, ItemStack $$5,int xp) {
@@ -29,6 +29,11 @@ public class ShapedXPRecipe extends ShapedRecipe {
     @Override
     public RecipeSerializer<?> getSerializer() {
         return ModRecipeSerializers.SHAPED;
+    }
+
+    @Override
+    public int getXP() {
+        return xp;
     }
 
 
