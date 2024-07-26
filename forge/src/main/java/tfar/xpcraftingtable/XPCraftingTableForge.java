@@ -27,7 +27,6 @@ public class XPCraftingTableForge {
     
         // Use Forge to bootstrap the Common mod.
         XPCraftingTable.init();
-        ModRecipeTypes.class.getName();
     }
 
     private void register(RegisterEvent event) {
@@ -35,7 +34,8 @@ public class XPCraftingTableForge {
         event.register(Registry.ITEM_REGISTRY,XPCraftingTable.id("xp_crafting_table"),() -> Init.ITEM);
         event.register(Registry.MENU_REGISTRY,XPCraftingTable.id("xp_crafting_table"),() -> Init.MENU_TYPE);
 
-        ((MappedRegistry< RecipeSerializer<?>>)Registry.RECIPE_SERIALIZER).unfreeze();
+        event.register(Registry.RECIPE_TYPE_REGISTRY,XPCraftingTable.id("xp_crafting"),() -> ModRecipeTypes.XP_CRAFTING);
+
         event.register(Registry.RECIPE_SERIALIZER_REGISTRY,XPCraftingTable.id("shapeless"),() -> ModRecipeSerializers.SHAPELESS);
         event.register(Registry.RECIPE_SERIALIZER_REGISTRY,XPCraftingTable.id("shaped"),() -> ModRecipeSerializers.SHAPED);
 

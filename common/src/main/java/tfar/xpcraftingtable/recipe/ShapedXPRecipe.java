@@ -8,8 +8,10 @@ import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.ShapedRecipe;
 import tfar.xpcraftingtable.ModRecipeSerializers;
+import tfar.xpcraftingtable.ModRecipeTypes;
 
 public class ShapedXPRecipe extends ShapedRecipe {
     protected final int xp;
@@ -19,6 +21,10 @@ public class ShapedXPRecipe extends ShapedRecipe {
         this.xp = xp;
     }
 
+    @Override
+    public RecipeType<?> getType() {
+        return ModRecipeTypes.XP_CRAFTING;
+    }
 
     @Override
     public RecipeSerializer<?> getSerializer() {

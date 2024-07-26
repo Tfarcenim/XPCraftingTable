@@ -56,7 +56,7 @@ public class XPCraftingMenu extends AbstractContainerMenu {
      */
     @Override
     public boolean stillValid(Player pPlayer) {
-        return stillValid(this.access, pPlayer, Blocks.CRAFTING_TABLE);
+        return stillValid(this.access, pPlayer,Init.BLOCK);
     }
 
     /**
