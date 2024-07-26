@@ -9,7 +9,7 @@ import net.minecraft.world.level.material.Material;
 
 public class Init {
 
-    public static final Block BLOCK = new XPCraftingTableBlock(BlockBehaviour.Properties.of(Material.WOOD));
+    public static final Block BLOCK = new XPCraftingTableBlock(BlockBehaviour.Properties.of(Material.STONE).strength(2.5f,5));
     public static final Item ITEM = new BlockItem(BLOCK,new Item.Properties());
     public static final MenuType<XPCraftingMenu> MENU_TYPE = new MenuType<>(XPCraftingMenu::new);
 

@@ -237,6 +237,11 @@ public class XPCraftingMenu extends AbstractContainerMenu {
         return current != null && ((XPRecipe)current).hasEnough(player);
     }
 
+    public void removed(Player pPlayer) {
+        super.removed(pPlayer);
+        this.access.execute((p_39371_, p_39372_) -> this.clearContainer(pPlayer, this.craftSlots));
+    }
+
     protected void slotChangedCraftingGrid(Level pLevel, Player pPlayer, CraftingContainer pContainer, ResultContainer pResult) {
         if (!pLevel.isClientSide) {
             ServerPlayer serverplayer = (ServerPlayer)pPlayer;

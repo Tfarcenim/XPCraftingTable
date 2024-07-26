@@ -1,0 +1,10 @@
+{
+  "parent": "minecraft:block/lectern",
+  "textures": {
+    "base": "minecraft:block/gold_block",
+    "bottom": "minecraft:block/gold_block",
+    "front": "minecraft:block/obsidian",
+    "sides": "minecraft:block/obsidian",
+    "top": "minecraft:block/warped_planks"
+  }
+}

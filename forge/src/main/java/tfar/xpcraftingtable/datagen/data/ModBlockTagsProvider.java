@@ -17,6 +17,6 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 
     @Override
     protected void addTags() {
-        tag(BlockTags.MINEABLE_WITH_AXE).add(Init.BLOCK);
+        tag(BlockTags.MINEABLE_WITH_PICKAXE).add(Init.BLOCK);
     }
 }

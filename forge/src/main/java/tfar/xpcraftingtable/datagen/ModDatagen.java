@@ -19,6 +19,6 @@ public class ModDatagen {
         dataGenerator.addProvider(true, ModLootTableProvider.create(dataGeneratorPackOutput));
         dataGenerator.addProvider(true,new ModBlockTagsProvider(dataGeneratorPackOutput,existingFileHelper));
         dataGenerator.addProvider(true,new ModRecipeProvider(dataGeneratorPackOutput));
-
+        dataGenerator.addProvider(client,new ModeItemModelProvider(dataGeneratorPackOutput,existingFileHelper));
     }
 }
