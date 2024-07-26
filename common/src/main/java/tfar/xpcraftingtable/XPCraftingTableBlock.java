@@ -9,7 +9,6 @@ import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ContainerLevelAccess;
-import net.minecraft.world.inventory.CraftingMenu;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -34,7 +33,7 @@ public class XPCraftingTableBlock extends Block {
 
     public MenuProvider getMenuProvider(BlockState $$0, Level $$1, BlockPos $$2) {
         return new SimpleMenuProvider(($$2x, $$3, $$4) -> {
-            return new CraftingMenu($$2x, $$3, ContainerLevelAccess.create($$1, $$2));
+            return new XPCraftingMenu($$2x, $$3, ContainerLevelAccess.create($$1, $$2));
         }, CONTAINER_TITLE);
     }
 
