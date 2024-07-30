@@ -1,6 +1,8 @@
 package tfar.xpcraftingtable;
 
 import net.minecraft.core.Registry;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -18,6 +20,10 @@ public class XPCraftingTable {
     public static final String MOD_ID = "xpcraftingtable";
     public static final String MOD_NAME = "XPCraftingTable";
     public static final Logger LOG = LoggerFactory.getLogger(MOD_NAME);
+
+    public static final MutableComponent COMPONENT =  Component.translatable("category.xpcraftingtable.xp_crafting");
+
+     public static final String XP_TOOLTIP = "category.xpcraftingtable.xp_crafting.xp";
 
     // The loader specific projects are able to import and use any code from the common project. This allows you to
     // write the majority of your code here and load it from your loader specific projects. This example has some

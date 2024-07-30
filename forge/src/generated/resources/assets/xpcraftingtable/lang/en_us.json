@@ -1,3 +1,5 @@
 {
-  "block.xpcraftingtable.xp_crafting_table": "Xp Crafting Table"
+  "block.xpcraftingtable.xp_crafting_table": "Xp Crafting Table",
+  "category.xpcraftingtable.xp_crafting": "XP Crafting",
+  "category.xpcraftingtable.xp_crafting.xp": "Cost: %s"
 }

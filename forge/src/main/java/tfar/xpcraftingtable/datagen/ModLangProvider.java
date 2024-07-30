@@ -1,6 +1,9 @@
 package tfar.xpcraftingtable.datagen;
 
 import net.minecraft.data.DataGenerator;
+import net.minecraft.network.chat.ComponentContents;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -20,6 +23,8 @@ public class ModLangProvider extends LanguageProvider {
     @Override
     protected void addTranslations() {
         addDefaultBlock(() -> Init.BLOCK);
+        addTextComponent(XPCraftingTable.COMPONENT,"XP Crafting");
+        add(XPCraftingTable.XP_TOOLTIP,"Cost: %s");
     }
 
 
@@ -55,4 +60,12 @@ public class ModLangProvider extends LanguageProvider {
         return StringUtils.capitaliseAllWords(entity.getDescriptionId().split("\\.")[2].replace("_", " "));
     }
 
+    protected void addTextComponent(MutableComponent component, String text) {
+        ComponentContents contents = component.getContents();
+        if (contents instanceof TranslatableContents translatableContents) {
+            add(translatableContents.getKey(),text);
+        } else {
+            throw new UnsupportedOperationException(component +" is not translatable");
+        }
+    }
 }
