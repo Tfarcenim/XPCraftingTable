@@ -6,11 +6,15 @@ import me.shedaniel.rei.api.client.registry.category.CategoryRegistry;
 import me.shedaniel.rei.api.client.registry.display.DisplayRegistry;
 import me.shedaniel.rei.api.client.registry.screen.ScreenRegistry;
 import me.shedaniel.rei.api.client.registry.transfer.TransferHandlerRegistry;
+import me.shedaniel.rei.api.client.registry.transfer.simple.SimpleTransferHandler;
 import me.shedaniel.rei.api.common.util.EntryStacks;
 import me.shedaniel.rei.forge.REIPluginCommon;
+import me.shedaniel.rei.plugin.common.BuiltinPlugin;
+import net.minecraft.world.inventory.CraftingMenu;
 import net.minecraft.world.item.crafting.CraftingRecipe;
 import tfar.xpcraftingtable.Init;
 import tfar.xpcraftingtable.ModRecipeTypes;
+import tfar.xpcraftingtable.XPCraftingMenu;
 import tfar.xpcraftingtable.XPCraftingScreen;
 import tfar.xpcraftingtable.recipe.XPRecipe;
 
@@ -29,7 +33,8 @@ public class ReiClientPlugin<XP extends CraftingRecipe & XPRecipe> implements RE
 
   @Override
   public void registerTransferHandlers(TransferHandlerRegistry registry) {
-   // registry.register(new CraftingStationTransferHandler(CraftingStationMenu.class,ReiPlugin.XP_CRAFTING));
+    registry.register(SimpleTransferHandler.create(XPCraftingMenu.class, ReiPlugin.XP_CRAFTING,
+            new SimpleTransferHandler.IntRange(1, 10)));
   }
 
   @Override
